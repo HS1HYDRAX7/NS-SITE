@@ -17,7 +17,7 @@
   --red-3:#c40f2e;
   --red-glow: 255,59,63;
   --glass-fill: rgba(255,255,255,0.08);
-  --glass-fill-strong: rgba(255,255,255,0.14);
+  --glass-fill-stro<h1>We build worlds.<span>Then we break them.</span></h1>ng: rgba(255,255,255,0.14);
   --glass-border: rgba(255,255,255,0.35);
   --glass-sheen: rgba(255,255,255,0.55);
   --bg-1:#050810;
@@ -434,8 +434,8 @@ footer{
   <section class="hero">
     <div class="container" style="display:flex; align-items:center; gap:56px; flex-wrap:wrap;">
       <div class="hero-copy">
-        <h1>We build worlds.<span>Then we break them.</span></h1>
-        <p>Nemesis Studios is an independent game development studio crafting original titles from the ground up — built in the open, shipped in pieces, polished over time.</p>
+        <h1>Inspired worlds<br>Original worlds<br><span>All built by us</span></h1>
+        <p>Nemesis Studios is an independent game development studio crafting inspired and original titles alike — built in the open, shipped in pieces, polished over time.</p>
         <div style="display:flex; gap:14px; flex-wrap:wrap;">
           <a href="#games" class="btn btn-primary" data-scroll-to="games">See our games</a>
           <a href="#support" class="btn btn-ghost" data-scroll-to="support">Support the studio</a>
@@ -579,6 +579,76 @@ footer{
     }
     requestAnimationFrame(step);
   }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(link){
+    link.addEventListener('click', function(e){
+      var id = link.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      var headerOffset = 100;
+      var targetY = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      var distance = Math.abs(targetY - window.scrollY);
+      var duration = Math.min(1400, Math.max(600, distance * 0.6));
+      smoothScrollTo(targetY, duration);
+    });
+  });
+})();
+
+(function(){
+  var field = document.getElementById('shapes-field');
+  var shapeTypes = ['circle','rrect','square','tri'];
+  var count = window.innerWidth < 600 ? 10 : 18;
+
+  for (var i = 0; i < count; i++){
+    var el = document.createElement('div');
+    var type = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+    el.className = 'shape ' + type;
+
+    var size = 30 + Math.random() * 90;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = (Math.random() * 100) + 'vw';
+
+    var duration = 18 + Math.random() * 22;
+    el.style.animationDuration = duration + 's';
+    el.style.animationDelay = (-Math.random() * duration) + 's';
+    el.style.setProperty('--drift', (Math.random() * 160 - 80) + 'px');
+
+    if (type === 'tri'){
+      el.style.borderLeft = (size/2) + 'px solid transparent';
+      el.style.borderRight = (size/2) + 'px solid transparent';
+      el.style.borderBottom = size + 'px solid rgba(255,59,63,0.28)';
+      el.style.width = '0';
+      el.style.height = '0';
+    }
+
+    field.appendChild(el);
+  }
+})();
+
+function easeInOutCubic(t){
+  return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+}
+
+function smoothScrollTo(targetY, duration){
+  var startY = window.scrollY || window.pageYOffset;
+  var distance = targetY - startY;
+  var startTime = null;
+
+  function step(timestamp){
+    if (startTime === null) startTime = timestamp;
+    var elapsed = timestamp - startTime;
+    var progress = Math.min(elapsed / duration, 1);
+    var eased = easeInOutCubic(progress);
+    window.scrollTo(0, startY + distance * eased);
+    if (progress < 1){
+      requestAnimationFrame(step);
+    }
+  }
+  requestAnimationFrame(step);
+}
+
 
   document.querySelectorAll('a[href^="#"]').forEach(function(link){
     link.addEventListener('click', function(e){
