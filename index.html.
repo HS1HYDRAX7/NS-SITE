@@ -1,0 +1,1700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>Nemesis Studios</title>
+<meta name="description" content="Nemesis Studios — independent game development studio.">
+<meta name="theme-color" content="#0c1522">
+<meta property="og:title" content="Nemesis Studios">
+<meta property="og:description" content="Independent game development studio crafting inspired and original titles.">
+<meta property="og:type" content="website">
+<meta property="og:image" content="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/logo/NS%20icon.png">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="icon" href="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/logo/NS%20icon.png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+<style>
+
+@font-face{
+  font-family:'StretchPro';
+  src:url('https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/fonts/StretchPro.ttf') format('truetype');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Plakativ';
+  src:url('https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/fonts/plakativ.ttf') format('truetype');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
+@font-face{
+  font-family:'Russian Dollmaker';
+  src:url('https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/fonts/Russian%20Dollmaker.ttf') format('truetype');
+  font-weight:normal;
+  font-style:normal;
+  font-display:swap;
+}
+
+:root{
+  --red-1:#ff3b3f;
+  --red-2:#ff6a4d;
+  --red-3:#c40f2e;
+  --red-glow: 255,59,63;
+  --glass-fill: rgba(255,255,255,0.08);
+  --glass-fill-strong: rgba(255,255,255,0.14);
+  --glass-border: rgba(255,255,255,0.35);
+  --glass-sheen: rgba(255,255,255,0.55);
+  --bg-1:#050810;
+  --bg-2:#0c1522;
+  --bg-3:#160a12;
+  --text-1:#f3f6fb;
+  --text-2:#b9c4d4;
+  --shadow-deep: 0 20px 60px rgba(0,0,0,0.45);
+
+  --state-stable:#33d17a;
+  --state-unstable:#ff3b3f;
+  --state-build:#3aa7ff;
+  --state-updating:#ffcc33;
+
+  --android-1:#3ddc84;
+  --android-2:#0f9d58;
+  --windows-1:#4fb3ff;
+  --windows-2:#0d6efd;
+}
+
+@media (prefers-color-scheme: light){
+  :root{
+    --glass-fill: rgba(255,255,255,0.45);
+    --glass-fill-strong: rgba(255,255,255,0.65);
+    --glass-border: rgba(255,255,255,0.7);
+    --glass-sheen: rgba(255,255,255,0.85);
+    --bg-1:#eaf1fb;
+    --bg-2:#fdf1f0;
+    --bg-3:#f5e6ea;
+    --text-1:#1a1420;
+    --text-2:#5a5560;
+    --shadow-deep: 0 20px 50px rgba(150,40,50,0.12);
+  }
+}
+
+*{box-sizing:border-box;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:'Manrope', sans-serif;
+  background:
+    radial-gradient(1200px 700px at 85% -10%, rgba(var(--red-glow),0.25), transparent 60%),
+    radial-gradient(900px 600px at 10% 110%, rgba(58,167,255,0.10), transparent 60%),
+    linear-gradient(160deg, var(--bg-1), var(--bg-2) 45%, var(--bg-3));
+  color:var(--text-1);
+  min-height:100vh;
+  overflow-x:hidden;
+  position:relative;
+  transition:background 0.6s ease, color 0.6s ease;
+}
+
+h1,h2,h3,.brand-word{
+  font-family:'Rajdhani', 'Manrope', sans-serif;
+  font-weight:700;
+  letter-spacing:0.01em;
+}
+
+.brand-word{
+  font-family:'Russian Dollmaker', 'Rajdhani', sans-serif;
+  font-size:40px;
+  letter-spacing:0.08em;
+  font-weight:normal;
+}
+
+.hero-copy h1{
+  font-family:'Plakativ', 'Rajdhani', sans-serif;
+  font-size:clamp(36px,5.4vw,62px);
+  line-height:1.08;
+  margin:0 0 20px;
+}
+.hero-copy p{
+  font-size:17px;
+  line-height:1.65;
+  max-width:520px;
+  margin:0 0 30px;
+}
+.hero-copy{max-width:640px;}
+
+::selection{background:rgba(var(--red-glow),0.35);}
+
+#shapes-field{
+  position:fixed;
+  inset:0;
+  overflow:hidden;
+  z-index:0;
+  pointer-events:none;
+}
+.shape{
+  position:absolute;
+  top:-140px;
+  opacity:0.5;
+  background:linear-gradient(135deg, rgba(var(--red-glow),0.35), rgba(255,255,255,0.06));
+  border:1px solid rgba(255,255,255,0.25);
+  backdrop-filter:blur(2px);
+  animation-name:fall;
+  animation-timing-function:linear;
+  animation-iteration-count:infinite;
+}
+.shape.circle{border-radius:50%;}
+.shape.rrect{border-radius:22%;}
+.shape.square{border-radius:18%;}
+.shape.tri{
+  background:none;
+  border:none;
+  width:0;
+  height:0;
+  opacity:0.4;
+}
+.shape.tri::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  clip-path:polygon(50% 0%, 100% 100%, 0% 100%);
+  background:linear-gradient(160deg, rgba(var(--red-glow),0.4), rgba(255,255,255,0.08));
+  border-radius:14%;
+}
+
+@keyframes fall{
+  0%{transform:translateY(-10vh) translateX(0) rotate(0deg);}
+  100%{transform:translateY(115vh) translateX(var(--drift,40px)) rotate(360deg);}
+}
+
+@media (prefers-reduced-motion: reduce){
+  .shape{animation:none; display:none;}
+}
+
+.container{
+  max-width:1280px;
+  margin:0 auto;
+  padding:0 32px;
+  position:relative;
+  z-index:2;
+}
+
+.glass{
+  background:var(--glass-fill);
+  border:1px solid var(--glass-border);
+  border-radius:26px;
+  backdrop-filter:blur(22px) saturate(160%);
+  -webkit-backdrop-filter:blur(22px) saturate(160%);
+  box-shadow:var(--shadow-deep), inset 0 1px 0 var(--glass-sheen), inset 0 0 40px rgba(255,255,255,0.03);
+  position:relative;
+}
+.glass::after{
+  content:'';
+  position:absolute;
+  top:0;left:0;right:0;
+  height:45%;
+  border-radius:26px 26px 60% 60% / 26px 26px 100% 100%;
+  background:linear-gradient(180deg, rgba(255,255,255,0.16), rgba(255,255,255,0));
+  pointer-events:none;
+}
+
+header{
+  position:sticky;
+  top:0;
+  z-index:50;
+  padding:18px 0;
+}
+.nav-glass{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:12px 24px;
+  border-radius:20px;
+}
+.brand{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:20px;
+  position:relative;
+}
+.brand img{
+  width:40px;
+  height:40px;
+  border-radius:12px;
+  object-fit:cover;
+  box-shadow:0 4px 14px rgba(var(--red-glow),0.4);
+}
+nav ul{
+  list-style:none;
+  display:flex;
+  gap:28px;
+  margin:0;
+  padding:0;
+}
+nav a{
+  color:var(--text-2);
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  transition:color 0.25s ease;
+}
+nav a:hover, nav a:focus-visible{color:var(--red-1);}
+
+.nav-side{
+  display:flex;
+  align-items:center;
+  gap:10px;
+}
+.nav-icon-btn{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:var(--glass-fill);
+  border:1px solid var(--glass-border);
+  transition:transform 0.2s ease, background 0.2s ease, box-shadow 0.2s ease;
+  flex:0 0 auto;
+}
+.nav-icon-btn:hover, .nav-icon-btn:focus-visible{
+  transform:translateY(-3px);
+  background:var(--glass-fill-strong);
+  box-shadow:0 10px 24px rgba(var(--red-glow),0.35);
+}
+.nav-icon-btn img{
+  width:24px;
+  height:24px;
+  border-radius:7px;
+  object-fit:cover;
+  display:block;
+}
+.nav-toggle{
+  display:none;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  gap:5px;
+  width:42px;
+  height:42px;
+  border-radius:13px;
+  background:var(--glass-fill);
+  border:1px solid var(--glass-border);
+  cursor:pointer;
+  flex:0 0 auto;
+}
+.nav-toggle span{
+  display:block;
+  width:18px;
+  height:2px;
+  background:var(--text-1);
+  border-radius:2px;
+  transition:transform 0.25s ease, opacity 0.25s ease;
+}
+.nav-toggle.is-open span:nth-child(1){transform:translateY(7px) rotate(45deg);}
+.nav-toggle.is-open span:nth-child(2){opacity:0;}
+.nav-toggle.is-open span:nth-child(3){transform:translateY(-7px) rotate(-45deg);}
+
+.mobile-menu{
+  display:none;
+  flex-direction:column;
+  gap:4px;
+  margin-top:10px;
+  padding:14px;
+  border-radius:20px;
+}
+.mobile-menu.open{display:flex;}
+.mobile-menu a{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  padding:12px 14px;
+  border-radius:14px;
+  color:var(--text-1);
+  text-decoration:none;
+  font-weight:600;
+  font-size:15px;
+  transition:background 0.2s ease;
+}
+.mobile-menu a:hover{background:rgba(255,255,255,0.1);}
+.mobile-menu a img{width:20px; height:20px; border-radius:6px; object-fit:cover;}
+
+.hero{
+  padding:120px 0 80px;
+  display:flex;
+  align-items:center;
+  gap:56px;
+  min-height:80vh;
+}
+
+.hero-logo-wrap{
+  flex:0 0 auto;
+  display:flex;
+  justify-content:flex-end;
+  align-items:center;
+  width:320px;
+  max-width:38vw;
+}
+.hero-logo-glass{
+  padding:22px;
+  border-radius:34px;
+  animation:float-logo 7s ease-in-out infinite;
+}
+.hero-logo-glass img{
+  width:100%;
+  aspect-ratio:1/1;
+  object-fit:contain;
+  display:block;
+  filter:drop-shadow(0 10px 30px rgba(var(--red-glow),0.5));
+}
+@keyframes float-logo{
+  0%,100%{transform:translateY(0px);}
+  50%{transform:translateY(-14px);}
+}
+
+.btn{
+  display:inline-flex;
+  align-items:center;
+  gap:10px;
+  padding:14px 28px;
+  border-radius:16px;
+  font-weight:700;
+  font-size:15px;
+  text-decoration:none;
+  border:1px solid var(--glass-border);
+  cursor:pointer;
+  transition:transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+}
+.btn-primary{
+  background:linear-gradient(135deg, var(--red-1), var(--red-3));
+  color:#fff;
+  box-shadow:0 10px 30px rgba(var(--red-glow),0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.btn-primary:hover{transform:translateY(-3px); box-shadow:0 16px 36px rgba(var(--red-glow),0.55), inset 0 1px 0 rgba(255,255,255,0.5);}
+.btn-ghost{
+  background:var(--glass-fill);
+  color:var(--text-1);
+  backdrop-filter:blur(14px);
+}
+.btn-ghost:hover{transform:translateY(-3px); background:var(--glass-fill-strong);}
+.btn-android{
+  background:linear-gradient(135deg, var(--android-1), var(--android-2));
+  color:#fff;
+  box-shadow:0 10px 30px rgba(15,157,88,0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.btn-android:hover{transform:translateY(-3px); box-shadow:0 16px 36px rgba(15,157,88,0.55), inset 0 1px 0 rgba(255,255,255,0.5);}
+.btn-windows{
+  background:linear-gradient(135deg, var(--windows-1), var(--windows-2));
+  color:#fff;
+  box-shadow:0 10px 30px rgba(13,110,253,0.45), inset 0 1px 0 rgba(255,255,255,0.4);
+}
+.btn-windows:hover{transform:translateY(-3px); box-shadow:0 16px 36px rgba(13,110,253,0.55), inset 0 1px 0 rgba(255,255,255,0.5);}
+.btn svg{flex:0 0 auto; display:block;}
+.btn-icon{width:18px; height:18px; object-fit:contain; flex:0 0 auto; display:block;}
+.btn:active{transform:translateY(0);}
+.btn:focus-visible{outline:2px solid var(--red-1); outline-offset:3px;}
+
+section{padding:70px 0;}
+.section-head{margin-bottom:40px; max-width:640px; display:flex; flex-direction:column; gap:10px;}
+.section-kicker{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  font-size:12.5px;
+  font-weight:700;
+  letter-spacing:0.14em;
+  text-transform:uppercase;
+  color:var(--red-2);
+}
+.section-kicker::before{
+  content:'';
+  width:24px;
+  height:2px;
+  background:linear-gradient(90deg, var(--red-1), var(--red-2));
+  border-radius:2px;
+}
+.section-head h2{font-size:clamp(28px,4vw,42px); margin:0 0 12px; font-family:'Plakativ', 'Rajdhani', sans-serif;}
+.section-head p{color:var(--text-2); font-size:16px; line-height:1.6; margin:0;}
+
+#games-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(300px, 1fr));
+  gap:28px;
+}
+.game-card{
+  border-radius:26px;
+  overflow:hidden;
+  display:flex;
+  flex-direction:column;
+  transition:transform 0.5s cubic-bezier(.22,1,.36,1), box-shadow 0.5s cubic-bezier(.22,1,.36,1), border-color 0.4s ease;
+}
+.game-card.reveal-pending{
+  opacity:0;
+  transform:translateY(22px) scale(0.98);
+  filter:blur(6px);
+}
+.game-card.reveal-pending.in-view{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  filter:blur(0);
+  transition:transform 0.7s cubic-bezier(.22,1,.36,1), opacity 0.7s ease, filter 0.7s ease, box-shadow 0.5s cubic-bezier(.22,1,.36,1);
+}
+.game-card:hover{transform:translateY(-10px) scale(1.012); box-shadow:0 26px 52px rgba(var(--red-glow),0.24), var(--shadow-deep); border-color:rgba(var(--red-glow),0.4);}
+.game-cover-wrap{overflow:hidden; display:block; border-bottom:1px solid var(--glass-border);}
+.game-cover{
+  width:100%;
+  aspect-ratio:16/9;
+  object-fit:cover;
+  display:block;
+  transition:transform 0.6s cubic-bezier(.22,1,.36,1);
+}
+.game-card:hover .game-cover{transform:scale(1.06);}
+.game-body{padding:22px 24px 26px; display:flex; flex-direction:column; gap:14px; flex:1;}
+.game-body h3{margin:0; font-size:22px; font-family:'StretchPro', 'Rajdhani', sans-serif;}
+.game-body p{margin:0; color:var(--text-2); font-size:14.5px; line-height:1.55; flex:1;}
+
+.status-row{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  flex-wrap:wrap;
+}
+.pill{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  padding:6px 14px;
+  border-radius:999px;
+  font-size:13px;
+  font-weight:700;
+  border:1px solid rgba(255,255,255,0.25);
+  background:rgba(255,255,255,0.08);
+}
+.pill .dot{
+  width:9px;
+  height:9px;
+  border-radius:50%;
+  box-shadow:0 0 10px currentColor;
+  animation:pulse-dot 1.8s ease-in-out infinite;
+}
+@keyframes pulse-dot{
+  0%,100%{opacity:1;}
+  50%{opacity:0.4;}
+}
+.pill.stable{color:var(--state-stable);}
+.pill.unstable{color:var(--state-unstable);}
+.pill.build{color:var(--state-build);}
+.pill.updating{color:var(--state-updating);}
+.version-tag{
+  font-family:'StretchPro', 'Rajdhani', sans-serif;
+  font-weight:700;
+  font-size:14px;
+  color:var(--text-1);
+  opacity:0.85;
+}
+
+.game-actions{display:flex; gap:10px; flex-wrap:wrap; margin-top:6px;}
+.game-actions .btn{padding:10px 18px; font-size:13.5px;}
+
+.download-panel{
+  display:none;
+  flex-direction:column;
+  gap:14px;
+  padding:20px 24px;
+  border-top:1px solid var(--glass-border);
+  animation:reveal 0.4s ease;
+}
+.download-panel.open{display:flex;}
+@keyframes reveal{
+  from{opacity:0; transform:translateY(-8px);}
+  to{opacity:1; transform:translateY(0);}
+}
+.download-panel .row{display:flex; gap:10px; flex-wrap:wrap;}
+.versions-list{
+  display:none;
+  flex-direction:column;
+  gap:8px;
+  max-height:220px;
+  overflow-y:auto;
+  padding-right:4px;
+}
+.versions-list.open{display:flex;}
+.version-item{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:10px;
+  padding:10px 14px;
+  border-radius:14px;
+  background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.15);
+  font-size:13.5px;
+}
+.version-item a{color:var(--red-2); text-decoration:none; font-weight:700;}
+.version-item a:hover{text-decoration:underline;}
+
+.add-game-slot{
+  border-radius:26px;
+  border:2px dashed rgba(255,255,255,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:220px;
+  color:var(--text-2);
+  font-size:14px;
+  text-align:center;
+  padding:24px;
+}
+
+#devs-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fit, minmax(240px, 1fr));
+  gap:28px;
+}
+.dev-card{
+  border-radius:26px;
+  padding:30px 24px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  text-align:center;
+  gap:6px;
+  cursor:pointer;
+  transition:transform 0.5s cubic-bezier(.22,1,.36,1), box-shadow 0.5s cubic-bezier(.22,1,.36,1), border-color 0.4s ease;
+}
+.dev-card.reveal-pending{
+  opacity:0;
+  transform:translateY(22px) scale(0.98);
+  filter:blur(6px);
+}
+.dev-card.reveal-pending.in-view{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  filter:blur(0);
+  transition:transform 0.7s cubic-bezier(.22,1,.36,1), opacity 0.7s ease, filter 0.7s ease, box-shadow 0.5s cubic-bezier(.22,1,.36,1);
+}
+.dev-card:hover, .dev-card:focus-visible{transform:translateY(-8px) scale(1.012); box-shadow:0 24px 48px rgba(var(--red-glow),0.18), var(--shadow-deep); border-color:rgba(var(--red-glow),0.4);}
+.dev-card:active{transform:translateY(-3px) scale(1);}
+.dev-card:focus-visible{outline:2px solid var(--red-1); outline-offset:4px;}
+.dev-avatar-wrap{position:relative; display:inline-flex; margin-bottom:10px;}
+.dev-avatar{
+  width:96px;
+  height:96px;
+  border-radius:50%;
+  object-fit:cover;
+  border:2px solid rgba(var(--red-glow),0.5);
+  box-shadow:0 8px 24px rgba(var(--red-glow),0.35);
+  transition:box-shadow 0.4s ease, border-color 0.4s ease;
+  display:block;
+}
+.dev-card.is-playing .dev-avatar{
+  border-color:var(--red-1);
+  box-shadow:0 0 0 6px rgba(var(--red-glow),0.22), 0 8px 24px rgba(var(--red-glow),0.5);
+}
+.dev-audio-badge{
+  position:absolute;
+  right:-4px;
+  bottom:4px;
+  width:30px;
+  height:30px;
+  border-radius:50%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:2px;
+  background:linear-gradient(135deg, var(--red-1), var(--red-3));
+  color:#fff;
+  box-shadow:0 6px 16px rgba(var(--red-glow),0.5);
+  opacity:0;
+  transform:scale(0.6);
+  transition:opacity 0.25s ease, transform 0.25s ease;
+}
+.dev-card:hover .dev-audio-badge,
+.dev-card:focus-visible .dev-audio-badge,
+.dev-card.is-playing .dev-audio-badge{
+  opacity:1;
+  transform:scale(1);
+}
+.dev-audio-badge .eq{display:none; align-items:flex-end; gap:2px; height:14px;}
+.dev-audio-badge .eq i{width:3px; background:#fff; border-radius:2px; animation:eq-bounce 0.9s ease-in-out infinite;}
+.dev-audio-badge .eq i:nth-child(1){height:6px; animation-delay:0s;}
+.dev-audio-badge .eq i:nth-child(2){height:14px; animation-delay:0.15s;}
+.dev-audio-badge .eq i:nth-child(3){height:9px; animation-delay:0.3s;}
+.dev-card.is-playing .dev-audio-badge .eq{display:flex;}
+.dev-card.is-playing .dev-audio-badge .icon-note{display:none;}
+@keyframes eq-bounce{
+  0%,100%{transform:scaleY(0.4);}
+  50%{transform:scaleY(1);}
+}
+@media (prefers-reduced-motion: reduce){
+  .dev-audio-badge .eq i{animation:none; transform:scaleY(0.8);}
+}
+.dev-body h3{margin:0; font-size:20px; font-family:'StretchPro', 'Rajdhani', sans-serif;}
+.dev-role{
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.06em;
+  text-transform:uppercase;
+  color:var(--red-2);
+}
+.dev-body p{margin:8px 0 0; color:var(--text-2); font-size:14px; line-height:1.55;}
+.add-dev-slot{
+  border-radius:26px;
+  border:2px dashed rgba(255,255,255,0.25);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  min-height:220px;
+  color:var(--text-2);
+  font-size:14px;
+  text-align:center;
+  padding:24px;
+}
+.footer-credit{
+  margin-top:6px;
+  font-size:12px;
+  opacity:0.7;
+}
+.footer-credit a{color:var(--red-2); text-decoration:none;}
+.footer-credit a:hover{text-decoration:underline;}
+
+.support-section .glass{
+  padding:48px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:32px;
+  flex-wrap:wrap;
+}
+.support-copy h2{margin:0 0 10px; font-size:clamp(26px,3.6vw,36px); font-family:'Plakativ', 'Rajdhani', sans-serif;}
+.support-copy p{margin:0; color:var(--text-2); max-width:460px; line-height:1.6;}
+
+footer{
+  padding:40px 0 60px;
+  text-align:center;
+  color:var(--text-2);
+  font-size:13.5px;
+}
+
+@media (min-width:1600px){
+  .container{max-width:1520px;}
+  .hero{min-height:70vh;}
+}
+
+@media (max-width:900px){
+  .hero{flex-direction:column; text-align:center; padding-top:150px;}
+  .hero-copy p{margin-left:auto; margin-right:auto;}
+  .hero-logo-wrap{width:220px; max-width:60vw; justify-content:center;}
+  nav ul{gap:16px;}
+  .support-section .glass{flex-direction:column; text-align:center;}
+}
+
+@media (max-width:600px){
+  .container{padding:0 18px;}
+  nav{display:none;}
+  .nav-toggle{display:flex;}
+  .hero{padding-top:130px;}
+  .hero-copy h1{font-size:38px;}
+  section{padding:50px 0;}
+}
+@media (min-width:601px){
+  .mobile-menu{display:none !important;}
+}
+
+.dl-hero{
+  position:relative;
+  isolation:isolate;
+  min-height:150px;
+  border-radius:18px;
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:center;
+  overflow:hidden;
+  border:1px solid rgba(255,255,255,0.18);
+}
+.dl-hero::before{
+  content:'';
+  position:absolute;
+  inset:0;
+  z-index:-1;
+}
+.dl-hero--android::before{background:radial-gradient(140% 130% at 50% -10%, var(--android-1), rgba(6,20,14,0.94) 68%);}
+.dl-hero--windows::before{background:radial-gradient(140% 130% at 50% -10%, var(--windows-1), rgba(6,14,26,0.94) 68%);}
+.dl-hero-badge{
+  position:absolute;
+  top:12px; left:12px;
+  font-family:'Rajdhani', sans-serif;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:0.04em;
+  padding:5px 12px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.4);
+  color:#fff;
+  border:1px solid rgba(255,255,255,0.28);
+}
+.dl-hero-size{
+  position:absolute;
+  bottom:12px; left:12px;
+  font-family:'Rajdhani', sans-serif;
+  font-size:12.5px;
+  font-weight:700;
+  color:#fff;
+  padding:4px 11px;
+  border-radius:999px;
+  background:rgba(0,0,0,0.4);
+  border:1px solid rgba(255,255,255,0.22);
+}
+.dl-hero-icon{
+  width:58px; height:58px;
+  border-radius:16px;
+  display:flex; align-items:center; justify-content:center;
+  background:rgba(255,255,255,0.14);
+  border:1px solid rgba(255,255,255,0.32);
+  color:#fff;
+  box-shadow:0 8px 22px rgba(0,0,0,0.3);
+}
+.dl-hero-icon svg{width:26px; height:26px;}
+
+.dl-file-row{
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  gap:14px;
+  padding:16px 2px 4px;
+  flex-wrap:wrap;
+}
+.dl-file-name{display:flex; flex-direction:column; gap:2px; min-width:0;}
+.dl-file-name strong{font-size:15px; font-family:'StretchPro', 'Rajdhani', sans-serif;}
+.dl-file-name span{color:var(--text-2); font-size:12.5px;}
+.dl-download-btn{
+  display:inline-flex;
+  align-items:center;
+  gap:8px;
+  flex:0 0 auto;
+  padding:12px 22px;
+  border-radius:999px;
+  background:#fff;
+  color:#14151d;
+  font-weight:700;
+  font-size:14px;
+  text-decoration:none;
+  border:1px solid rgba(255,255,255,0.7);
+  box-shadow:0 10px 24px rgba(0,0,0,0.28);
+  transition:transform 0.2s ease, box-shadow 0.2s ease;
+}
+.dl-download-btn svg{width:16px; height:16px;}
+.dl-download-btn:hover{transform:translateY(-2px); box-shadow:0 14px 30px rgba(0,0,0,0.34);}
+.dl-download-btn:focus-visible{outline:2px solid #fff; outline-offset:3px;}
+
+.dl-older-toggle{
+  align-self:flex-start;
+  margin:2px 2px 0;
+  background:none;
+  border:none;
+  padding:2px 0;
+  color:var(--text-2);
+  font-size:12.5px;
+  font-weight:700;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+.dl-older-toggle:hover{color:var(--text-1);}
+.dl-older-toggle:focus-visible{outline:2px solid var(--red-1); outline-offset:3px;}
+
+@media (max-width:420px){
+  .dl-file-row{flex-direction:column; align-items:stretch;}
+  .dl-download-btn{justify-content:center;}
+}
+
+.desc-clamp{
+  display:-webkit-box;
+  -webkit-box-orient:vertical;
+  -webkit-line-clamp:2;
+  overflow:hidden;
+}
+.desc-clamp.is-expanded{
+  -webkit-line-clamp:unset;
+  display:block;
+  overflow:visible;
+}
+.desc-toggle{
+  align-self:flex-start;
+  margin:2px 0 0;
+  background:none;
+  border:none;
+  padding:2px 0;
+  color:var(--red-2);
+  font-size:12.5px;
+  font-weight:700;
+  text-decoration:underline;
+  text-underline-offset:3px;
+  cursor:pointer;
+}
+.dev-card .desc-toggle{align-self:center;}
+.desc-toggle:hover{color:var(--red-1);}
+.desc-toggle:focus-visible{outline:2px solid var(--red-1); outline-offset:3px;}
+
+#cookie-consent{
+  position:fixed;
+  left:24px;
+  right:24px;
+  bottom:24px;
+  z-index:900;
+  margin:0 auto;
+  max-width:640px;
+  padding:22px 26px;
+  display:flex;
+  flex-direction:column;
+  gap:16px;
+  border-radius:22px;
+  transform:translateY(20px);
+  opacity:0;
+  pointer-events:none;
+  transition:transform 0.5s ease, opacity 0.5s ease;
+}
+#cookie-consent.is-visible{
+  transform:translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+#cookie-consent p{
+  margin:0;
+  color:var(--text-2);
+  font-size:13.5px;
+  line-height:1.55;
+}
+#cookie-consent .cookie-actions{
+  display:flex;
+  justify-content:flex-end;
+}
+#cookie-consent .btn{padding:10px 24px; font-size:13.5px;}
+
+@media (max-width:600px){
+  #cookie-consent{left:16px; right:16px; bottom:16px; padding:18px 20px;}
+}
+
+.brand-word{
+  display:inline-block;
+  min-width:11ch;
+  cursor:default;
+  user-select:none;
+}
+.brand-word.is-scrambling{
+  animation:brand-scramble-glow 0.3s ease-in-out infinite;
+}
+@keyframes brand-scramble-glow{
+  0%,100%{text-shadow:0 0 0 rgba(var(--red-glow),0);}
+  50%{text-shadow:0 0 16px rgba(var(--red-glow),0.65);}
+}
+
+.hearts-burst{
+  position:absolute;
+  left:0;
+  right:0;
+  bottom:4px;
+  height:0;
+  overflow:visible;
+  pointer-events:none;
+}
+.heart-particle{
+  position:absolute;
+  bottom:0;
+  color:var(--red-1);
+  filter:drop-shadow(0 0 6px rgba(var(--red-glow),0.55));
+  animation-name:heart-float;
+  animation-timing-function:cubic-bezier(.2,.7,.3,1);
+  animation-fill-mode:forwards;
+  will-change:transform, opacity;
+}
+@keyframes heart-float{
+  0%{transform:translate(0,0) scale(0.3) rotate(0deg); opacity:0;}
+  12%{opacity:1; transform:translate(0,-8px) scale(1) rotate(calc(var(--rot) * 0.2));}
+  100%{transform:translate(var(--drift),-110px) scale(1.2) rotate(var(--rot)); opacity:0;}
+}
+@media (prefers-reduced-motion: reduce){
+  .heart-particle{animation:none; display:none;}
+  .game-card.reveal-pending, .dev-card.reveal-pending{opacity:1; transform:none; filter:none;}
+}
+
+.audio-player{
+  position:fixed;
+  left:50%;
+  bottom:24px;
+  z-index:1000;
+  display:flex;
+  align-items:center;
+  gap:14px;
+  padding:10px 14px;
+  border-radius:999px;
+  min-width:280px;
+  max-width:min(420px, calc(100vw - 32px));
+  transform:translateX(-50%) translateY(140%);
+  opacity:0;
+  pointer-events:none;
+  transition:transform 0.5s cubic-bezier(.22,1,.36,1), opacity 0.35s ease;
+}
+.audio-player.is-visible{
+  transform:translateX(-50%) translateY(0);
+  opacity:1;
+  pointer-events:auto;
+}
+.audio-player-avatar{
+  width:38px;
+  height:38px;
+  border-radius:50%;
+  object-fit:cover;
+  flex:0 0 auto;
+  border:1px solid rgba(255,255,255,0.3);
+}
+.audio-player-info{flex:1; min-width:0; display:flex; flex-direction:column; gap:6px;}
+.audio-player-name{
+  font-size:13px;
+  font-weight:700;
+  white-space:nowrap;
+  overflow:hidden;
+  text-overflow:ellipsis;
+}
+.audio-player-progress{height:4px; border-radius:999px; background:rgba(255,255,255,0.15); overflow:hidden;}
+.audio-player-progress-fill{
+  height:100%;
+  width:0%;
+  background:linear-gradient(90deg, var(--red-1), var(--red-2));
+  border-radius:999px;
+}
+.audio-player-toggle, .audio-player-close{
+  width:36px;
+  height:36px;
+  border-radius:50%;
+  border:1px solid var(--glass-border);
+  background:var(--glass-fill-strong);
+  color:var(--text-1);
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  cursor:pointer;
+  flex:0 0 auto;
+  transition:transform 0.2s ease, background 0.2s ease;
+}
+.audio-player-toggle:hover, .audio-player-close:hover{transform:translateY(-2px); background:rgba(255,255,255,0.22);}
+.audio-player-toggle:focus-visible, .audio-player-close:focus-visible{outline:2px solid var(--red-1); outline-offset:2px;}
+@media (max-width:480px){
+  .audio-player{left:16px; right:16px; min-width:0; max-width:none; transform:translateY(140%);}
+  .audio-player.is-visible{transform:translateY(0);}
+}
+@media (prefers-reduced-motion: reduce){
+  .audio-player{transition:opacity 0.2s ease;}
+}
+</style>
+<script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js"></script>
+</head>
+<body>
+
+<div id="shapes-field" aria-hidden="true"></div>
+
+<header>
+  <div class="container">
+    <div class="nav-glass glass">
+      <div class="brand">
+        <img src="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/logo/NS%20icon.png" alt="Nemesis Studios logo" width="1280" height="1280" onerror="this.style.display='none'">
+        <span class="brand-word">Nemesis Studios</span>
+        <span class="hearts-burst" aria-hidden="true"></span>
+      </div>
+      <nav>
+        <ul>
+          <li><a href="#games" data-scroll-to="games">Games</a></li>
+          <li><a href="#devs" data-scroll-to="devs">Devs</a></li>
+          <li><a href="#support" data-scroll-to="support">Support us</a></li>
+        </ul>
+      </nav>
+      <div class="nav-side">
+        <a class="nav-icon-btn" href="https://stt.gg/1G2YWY84" target="_blank" rel="noopener" aria-label="Stoat">
+          <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/stoat.svg" alt="Stoat" onerror="this.parentElement.style.display='none'">
+        </a>
+        <button class="nav-toggle" id="nav-toggle" type="button" aria-label="Open menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu glass" id="mobile-menu">
+      <a href="#games" data-scroll-to="games">Games</a>
+      <a href="#devs" data-scroll-to="devs">Devs</a>
+      <a href="#support" data-scroll-to="support">Support us</a>
+      <a href="https://stt.gg/1G2YWY84" target="_blank" rel="noopener">
+        <img src="https://cdn.jsdelivr.net/gh/homarr-labs/dashboard-icons/svg/stoat.svg" alt="" onerror="this.style.display='none'">
+        Stoat
+      </a>
+    </div>
+  </div>
+</header>
+
+<main>
+  <section class="hero">
+    <div class="container" style="display:flex; align-items:center; gap:56px; flex-wrap:wrap;">
+      <div class="hero-copy">
+        <h1>Inspired worlds<br>Original worlds<br><span>All built by us</span></h1>
+        <p>Nemesis Studios is an independent game development studio crafting inspired and original titles alike — built in the open, shipped in pieces, polished over time.</p>
+        <div style="display:flex; gap:14px; flex-wrap:wrap;">
+          <a href="#games" class="btn btn-primary" data-scroll-to="games">See our games</a>
+          <a href="#support" class="btn btn-ghost" data-scroll-to="support">Support the studio</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="games">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Games</span>
+        <h2>Currently in development</h2>
+        <p>Two projects, two very different worlds. Track their status and grab the latest builds as they roll out.</p>
+      </div>
+
+      <div id="games-grid">
+
+        <article class="game-card glass" data-game="bloodtubbies">
+          <span class="game-cover-wrap"><img class="game-cover" src="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/banners/bloodtubbies.png" alt="Bloodtubbies cover art" loading="lazy" decoding="async"></span>
+          <div class="game-body">
+            <h3>Bloodtubbies</h3>
+            <p>Slendytubbies gets a darker twist: sharper models, smoother animations and a level of visual quality far beyond the original inspiration. Intense gore and violence come built in — but you can turn it all off in the settings for a lighter experience.</p>
+            <div class="status-row">
+              <span class="pill unstable"><span class="dot"></span>Unstable</span>
+              <span class="version-tag">V0.0.1</span>
+            </div>
+            <div class="game-actions">
+              <button class="btn btn-android toggle-download" data-platform="android" type="button" aria-expanded="false"><img class="btn-icon" src="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/icons/android.png" alt="" loading="lazy">Android</button>
+              <button class="btn btn-windows toggle-download" data-platform="windows" type="button" aria-expanded="false"><img class="btn-icon" src="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/icons/windows.png" alt="" loading="lazy">Windows</button>
+            </div>
+            <div class="download-panel" data-platform="android">
+              <div class="dl-hero dl-hero--android">
+                <span class="dl-hero-badge">APK</span>
+                <div class="dl-hero-icon" aria-hidden="true"><iconify-icon icon="gravity-ui:file-text" width="26" height="26"></iconify-icon></div>
+                <span class="dl-hero-size">Size TBA</span>
+              </div>
+              <div class="dl-file-row">
+                <div class="dl-file-name">
+                  <strong>Bloodtubbies</strong>
+                  <span>V0.0.1 · Android build</span>
+                </div>
+                <a class="dl-download-btn" href="https://github.com/HS1HYDRAX7/NS-SITE/releases/latest" target="_blank" rel="noopener"><iconify-icon icon="gravity-ui:arrow-down-to-line" width="16" height="16"></iconify-icon>Download file</a>
+              </div>
+              <button class="dl-older-toggle toggle-versions" type="button" aria-expanded="false">Older versions</button>
+              <div class="versions-list">
+                <div class="version-item"><span>V0.0.1 — Unstable</span><a href="https://github.com/HS1HYDRAX7/NS-SITE/releases" target="_blank" rel="noopener">Download</a></div>
+              </div>
+            </div>
+            <div class="download-panel" data-platform="windows">
+              <div class="dl-hero dl-hero--windows">
+                <span class="dl-hero-badge">EXE</span>
+                <div class="dl-hero-icon" aria-hidden="true"><iconify-icon icon="gravity-ui:file-text" width="26" height="26"></iconify-icon></div>
+                <span class="dl-hero-size">Size TBA</span>
+              </div>
+              <div class="dl-file-row">
+                <div class="dl-file-name">
+                  <strong>Bloodtubbies</strong>
+                  <span>V0.0.1 · Windows build</span>
+                </div>
+                <a class="dl-download-btn" href="https://github.com/HS1HYDRAX7/NS-SITE/releases/latest" target="_blank" rel="noopener"><iconify-icon icon="gravity-ui:arrow-down-to-line" width="16" height="16"></iconify-icon>Download file</a>
+              </div>
+              <button class="dl-older-toggle toggle-versions" type="button" aria-expanded="false">Older versions</button>
+              <div class="versions-list">
+                <div class="version-item"><span>V0.0.1 — Unstable</span><a href="https://github.com/HS1HYDRAX7/NS-SITE/releases" target="_blank" rel="noopener">Download</a></div>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <div class="add-game-slot">
+          More projects are on the way. New cards get added here as they enter development.
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="devs">
+    <div class="container">
+      <div class="section-head">
+        <span class="section-kicker">Team</span>
+        <h2>Meet the team</h2>
+        <p>The people building Nemesis Studios, one project at a time.</p>
+      </div>
+
+      <div id="devs-grid">
+
+        <article class="dev-card glass" tabindex="0" role="button" aria-pressed="false" data-audio="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/audio/cobalt.mp3" data-name="Cobalt">
+          <div class="dev-avatar-wrap">
+            <img class="dev-avatar" src="https://unavatar.io/tiktok/cobalt1571" alt="Cobalt avatar" loading="lazy" decoding="async" onerror="this.src='https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/logo/NS%20icon.png'">
+            <span class="dev-audio-badge" aria-hidden="true">
+              <svg class="icon-note" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 18V5l12-2v12.5"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15.5" r="3"/></svg>
+              <span class="eq"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="dev-body">
+            <h3>COBALT</h3>
+            <span class="dev-role">Owner</span>
+            <p>Just a guy with depression, lack of self-love, lack of self-esteem.</p>
+          </div>
+        </article>
+
+        <article class="dev-card glass" tabindex="0" role="button" aria-pressed="false" data-audio="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/audio/deky.mp3" data-name="Deky">
+          <div class="dev-avatar-wrap">
+            <img class="dev-avatar" src="https://unavatar.io/tiktok/dekyolol" alt="Deky avatar" loading="lazy" decoding="async" onerror="this.src='https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/logo/NS%20icon.png'">
+            <span class="dev-audio-badge" aria-hidden="true">
+              <svg class="icon-note" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 18V5l12-2v12.5"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15.5" r="3"/></svg>
+              <span class="eq"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="dev-body">
+            <h3>Deky</h3>
+            <span class="dev-role">Programmer</span>
+            <p>eugódicafé☕</p>
+          </div>
+        </article>
+
+        <article class="dev-card glass" tabindex="0" role="button" aria-pressed="false" data-audio="https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/audio/matt.mp3" data-name="Matt">
+          <div class="dev-avatar-wrap">
+            <img class="dev-avatar" src="https://unavatar.io/tiktok/mattsekar" alt="Matt avatar" loading="lazy" decoding="async" onerror="this.src='https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/images/logo/NS%20icon.png'">
+            <span class="dev-audio-badge" aria-hidden="true">
+              <svg class="icon-note" viewBox="0 0 24 24" width="14" height="14" fill="currentColor"><path d="M9 18V5l12-2v12.5"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="15.5" r="3"/></svg>
+              <span class="eq"><i></i><i></i><i></i></span>
+            </span>
+          </div>
+          <div class="dev-body">
+            <h3>MATT</h3>
+            <span class="dev-role">Tester</span>
+            <p>Hi, I'm the team tester jus herevto test game you know. Interesting facts about me or just things I like:
+1: I have a huge obsession with axes and chainsaws. 
+2:I like to draw, but I only know how to do it on paper. 
+3:And lastly, something completely random: I'm dating a trans woman... (Actually, she's a man who identifies as a woman, I don't even know why I'm saying this, oh my god.)</p>
+          </div>
+        </article>
+
+        <div class="add-dev-slot">
+          The team will show up here as devs get added.
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <section id="support" class="support-section">
+    <div class="container">
+      <div class="glass">
+        <div class="support-copy">
+          <h2>Want to help us build?</h2>
+          <p>We're always looking for artists, testers, writers and developers who want to get involved. Fill out the form and we'll get back to you.</p>
+        </div>
+        <a class="btn btn-primary" href="https://go.forms.app/form/6a9cc4a0ee2f839d51240e2f" target="_blank" rel="noopener">Join the project</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<div id="cookie-consent" class="glass" role="dialog" aria-label="Cookie notice">
+  <p>We use cookies to keep the site running smoothly and to understand how visitors explore our games. By clicking Accept, you agree to this.</p>
+  <div class="cookie-actions">
+    <button id="cookie-accept-btn" class="btn btn-primary" type="button">Accept</button>
+  </div>
+</div>
+
+<div id="audio-player" class="audio-player glass" role="dialog" aria-label="Dev audio player" aria-hidden="true">
+  <img class="audio-player-avatar" src="" alt="">
+  <div class="audio-player-info">
+    <strong class="audio-player-name">—</strong>
+    <div class="audio-player-progress"><div class="audio-player-progress-fill"></div></div>
+  </div>
+  <button class="audio-player-toggle" type="button" aria-label="Play">
+    <svg class="icon-play" viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>
+    <svg class="icon-pause" viewBox="0 0 24 24" width="18" height="18" fill="currentColor" style="display:none"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>
+  </button>
+  <button class="audio-player-close" type="button" aria-label="Close player">
+    <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor"><path d="M18.3 5.71 12 12l6.3 6.29-1.41 1.42L10.59 13.4 4.3 19.71 2.88 18.29 9.17 12 2.88 5.71 4.3 4.29l6.29 6.3 6.29-6.3z"/></svg>
+  </button>
+</div>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2026 Nemesis Studios. All rights reserved.</p>
+    <p class="footer-credit">Some team avatars powered by <a href="https://unavatar.io" target="_blank" rel="noopener">unavatar.io</a>.</p>
+  </div>
+</footer>
+
+<script>
+(function(){
+  function easeInOutQuart(t){
+    return t < 0.5 ? 8*t*t*t*t : 1 - Math.pow(-2*t+2, 4) / 2;
+  }
+
+  function smoothScrollTo(targetY, duration){
+    var startY = window.scrollY || window.pageYOffset;
+    var distance = targetY - startY;
+    var startTime = null;
+
+    function step(timestamp){
+      if (startTime === null) startTime = timestamp;
+      var elapsed = timestamp - startTime;
+      var progress = Math.min(elapsed / duration, 1);
+      var eased = easeInOutQuart(progress);
+      window.scrollTo(0, startY + distance * eased);
+      if (progress < 1){
+        requestAnimationFrame(step);
+      }
+    }
+    requestAnimationFrame(step);
+  }
+
+  document.querySelectorAll('a[href^="#"]').forEach(function(link){
+    link.addEventListener('click', function(e){
+      var id = link.getAttribute('href').slice(1);
+      var target = document.getElementById(id);
+      if (!target) return;
+      e.preventDefault();
+      var headerOffset = 100;
+      var targetY = target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      var distance = Math.abs(targetY - window.scrollY);
+      var duration = Math.min(1400, Math.max(600, distance * 0.6));
+      smoothScrollTo(targetY, duration);
+    });
+  });
+})();
+
+(function(){
+  var field = document.getElementById('shapes-field');
+  var shapeTypes = ['circle','rrect','square','tri'];
+  var count = window.innerWidth < 600 ? 10 : 18;
+
+  for (var i = 0; i < count; i++){
+    var el = document.createElement('div');
+    var type = shapeTypes[Math.floor(Math.random() * shapeTypes.length)];
+    el.className = 'shape ' + type;
+
+    var size = 30 + Math.random() * 90;
+    el.style.width = size + 'px';
+    el.style.height = size + 'px';
+    el.style.left = (Math.random() * 100) + 'vw';
+
+    var duration = 18 + Math.random() * 22;
+    el.style.animationDuration = duration + 's';
+    el.style.animationDelay = (-Math.random() * duration) + 's';
+    el.style.setProperty('--drift', (Math.random() * 160 - 80) + 'px');
+
+    if (type === 'tri'){
+      el.style.borderLeft = (size/2) + 'px solid transparent';
+      el.style.borderRight = (size/2) + 'px solid transparent';
+      el.style.borderBottom = size + 'px solid rgba(255,59,63,0.28)';
+      el.style.width = '0';
+      el.style.height = '0';
+    }
+
+    field.appendChild(el);
+  }
+})();
+
+(function(){
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  var items = document.querySelectorAll('.game-card, .dev-card');
+  if (reduceMotion || !('IntersectionObserver' in window)){
+    return;
+  }
+  items.forEach(function(el, i){
+    el.classList.add('reveal-pending');
+    el.style.transitionDelay = (Math.min(i % 4, 3) * 90) + 'ms';
+  });
+  var observer = new IntersectionObserver(function(entries){
+    entries.forEach(function(entry){
+      if (entry.isIntersecting){
+        entry.target.classList.add('in-view');
+        observer.unobserve(entry.target);
+      }
+    });
+  }, {threshold:0.15, rootMargin:'0px 0px -40px 0px'});
+  items.forEach(function(el){ observer.observe(el); });
+})();
+
+(function(){
+  var player = document.getElementById('audio-player');
+  var cards = document.querySelectorAll('.dev-card[data-audio]');
+  if (!player || !cards.length) return;
+
+  var toggleBtn = player.querySelector('.audio-player-toggle');
+  var closeBtn = player.querySelector('.audio-player-close');
+  var nameEl = player.querySelector('.audio-player-name');
+  var avatarEl = player.querySelector('.audio-player-avatar');
+  var fillEl = player.querySelector('.audio-player-progress-fill');
+  var iconPlay = toggleBtn.querySelector('.icon-play');
+  var iconPause = toggleBtn.querySelector('.icon-pause');
+  var audio = new Audio();
+  audio.preload = 'none';
+  var activeCard = null;
+
+  function setPlayingIcon(isPlaying){
+    iconPlay.style.display = isPlaying ? 'none' : '';
+    iconPause.style.display = isPlaying ? '' : 'none';
+  }
+
+  function closePlayer(){
+    audio.pause();
+    audio.removeAttribute('src');
+    audio.load();
+    player.classList.remove('is-visible');
+    player.setAttribute('aria-hidden', 'true');
+    if (activeCard){
+      activeCard.classList.remove('is-playing');
+      activeCard.setAttribute('aria-pressed', 'false');
+    }
+    activeCard = null;
+    setPlayingIcon(false);
+    fillEl.style.width = '0%';
+  }
+
+  function openCard(card){
+    var src = card.getAttribute('data-audio');
+    if (!src) return;
+
+    if (activeCard === card){
+      if (audio.paused){
+        audio.play().catch(function(){});
+      } else {
+        audio.pause();
+      }
+      return;
+    }
+
+    if (activeCard){
+      activeCard.classList.remove('is-playing');
+      activeCard.setAttribute('aria-pressed', 'false');
+    }
+
+    var name = card.getAttribute('data-name') || (card.querySelector('h3') || {}).textContent || '';
+    var avatarImg = card.querySelector('.dev-avatar');
+
+    activeCard = card;
+    card.classList.add('is-playing');
+    card.setAttribute('aria-pressed', 'true');
+    nameEl.textContent = name;
+    avatarEl.src = avatarImg ? avatarImg.src : '';
+    audio.src = src;
+    audio.currentTime = 0;
+    audio.play().catch(function(){});
+
+    player.classList.add('is-visible');
+    player.setAttribute('aria-hidden', 'false');
+  }
+
+  cards.forEach(function(card){
+    card.addEventListener('click', function(e){
+      if (e.target.closest('.desc-toggle')) return;
+      openCard(card);
+    });
+    card.addEventListener('keydown', function(e){
+      if (e.target.closest('.desc-toggle')) return;
+      if (e.key === 'Enter' || e.key === ' '){
+        e.preventDefault();
+        openCard(card);
+      }
+    });
+  });
+
+  audio.addEventListener('play', function(){ setPlayingIcon(true); });
+  audio.addEventListener('pause', function(){ setPlayingIcon(false); });
+  audio.addEventListener('ended', closePlayer);
+  audio.addEventListener('timeupdate', function(){
+    if (!audio.duration) return;
+    fillEl.style.width = (audio.currentTime / audio.duration * 100) + '%';
+  });
+
+  toggleBtn.addEventListener('click', function(){
+    if (!activeCard) return;
+    if (audio.paused){
+      audio.play().catch(function(){});
+    } else {
+      audio.pause();
+    }
+  });
+
+  closeBtn.addEventListener('click', closePlayer);
+
+  document.addEventListener('click', function(e){
+    if (!activeCard) return;
+    if (activeCard.contains(e.target) || player.contains(e.target)) return;
+    closePlayer();
+  });
+
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && activeCard) closePlayer();
+  });
+})();
+
+document.querySelectorAll('.toggle-download').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var platform = btn.getAttribute('data-platform');
+    var gameBody = btn.closest('.game-body');
+    var panel = gameBody.querySelector('.download-panel[data-platform="' + platform + '"]');
+    if (!panel) return;
+
+    var wasOpen = panel.classList.contains('open');
+
+    // Accordion: only one platform panel open per card at a time.
+    // Opening Android closes Windows (and vice-versa) automatically.
+    gameBody.querySelectorAll('.download-panel').forEach(function(p){
+      p.classList.remove('open');
+    });
+    gameBody.querySelectorAll('.toggle-download').forEach(function(b){
+      b.setAttribute('aria-expanded', 'false');
+    });
+
+    if (!wasOpen){
+      panel.classList.add('open');
+      btn.setAttribute('aria-expanded', 'true');
+    }
+  });
+});
+
+document.querySelectorAll('.toggle-versions').forEach(function(btn){
+  btn.addEventListener('click', function(){
+    var list = btn.closest('.download-panel').querySelector('.versions-list');
+    var isOpen = list.classList.toggle('open');
+    btn.setAttribute('aria-expanded', isOpen);
+    btn.textContent = isOpen ? 'Hide versions' : 'Older versions';
+  });
+});
+
+window.NemesisStudios = {
+  markFinished: function(gameId){
+    var card = document.querySelector('[data-game="' + gameId + '"]');
+    if (!card) return;
+    card.querySelectorAll('.download-panel').forEach(function(panel){
+      panel.classList.add('open');
+    });
+    card.querySelectorAll('.toggle-download').forEach(function(btn){
+      btn.setAttribute('aria-expanded', 'true');
+    });
+  },
+  setStatus: function(gameId, status, version){
+    var card = document.querySelector('[data-game="' + gameId + '"]');
+    if (!card) return;
+    var pill = card.querySelector('.pill');
+    var versionTag = card.querySelector('.version-tag');
+    var map = {stable:'Stable', unstable:'Unstable', build:'Build', updating:'Updating'};
+    pill.className = 'pill ' + status;
+    pill.innerHTML = '<span class="dot"></span>' + (map[status] || status);
+    if (version) versionTag.textContent = version;
+  }
+};
+
+(function(){
+  var DESC_SELECTOR = '.game-body p, .dev-body p';
+
+  function setupClamp(p){
+    if (p.dataset.clampInit) return;
+    p.dataset.clampInit = '1';
+    p.classList.add('desc-clamp');
+
+    var btn = document.createElement('button');
+    btn.type = 'button';
+    btn.className = 'desc-toggle';
+    btn.textContent = 'Show more';
+    btn.style.display = 'none';
+    p.insertAdjacentElement('afterend', btn);
+
+    function evaluate(){
+      var wasExpanded = p.classList.contains('is-expanded');
+      if (wasExpanded) p.classList.remove('is-expanded');
+      var overflowing = p.scrollHeight > p.clientHeight + 1;
+      if (wasExpanded) p.classList.add('is-expanded');
+
+      if (overflowing){
+        btn.style.display = 'inline-block';
+        btn.textContent = p.classList.contains('is-expanded') ? 'Show less' : 'Show more';
+      } else {
+        btn.style.display = 'none';
+        p.classList.remove('is-expanded');
+      }
+    }
+
+    btn.addEventListener('click', function(){
+      p.classList.toggle('is-expanded');
+      btn.textContent = p.classList.contains('is-expanded') ? 'Show less' : 'Show more';
+    });
+
+    p._descEvaluate = evaluate;
+    evaluate();
+  }
+
+  function initAll(){
+    document.querySelectorAll(DESC_SELECTOR).forEach(setupClamp);
+  }
+
+  if (document.readyState === 'complete'){
+    initAll();
+  } else {
+    window.addEventListener('load', initAll);
+  }
+
+  var resizeTimer;
+  window.addEventListener('resize', function(){
+    clearTimeout(resizeTimer);
+    resizeTimer = setTimeout(function(){
+      document.querySelectorAll(DESC_SELECTOR).forEach(function(p){
+        if (p._descEvaluate) p._descEvaluate();
+      });
+    }, 200);
+  });
+})();
+
+var showCookieConsent = function(){
+  var consent = document.getElementById('cookie-consent');
+  if (!consent) return;
+  try{
+    if (localStorage.getItem('ns-cookie-consent') === 'accepted') return;
+  }catch(e){}
+  consent.classList.add('is-visible');
+};
+
+(function(){
+  var consent = document.getElementById('cookie-consent');
+  var acceptBtn = document.getElementById('cookie-accept-btn');
+  if (!consent || !acceptBtn) return;
+  acceptBtn.addEventListener('click', function(){
+    try{ localStorage.setItem('ns-cookie-consent', 'accepted'); }catch(e){}
+    consent.classList.remove('is-visible');
+  });
+  setTimeout(showCookieConsent, 900);
+})();
+
+(function(){
+  var toggle = document.getElementById('nav-toggle');
+  var menu = document.getElementById('mobile-menu');
+  if (!toggle || !menu) return;
+
+  function closeMenu(){
+    menu.classList.remove('open');
+    toggle.classList.remove('is-open');
+    toggle.setAttribute('aria-expanded', 'false');
+  }
+
+  toggle.addEventListener('click', function(){
+    var isOpen = menu.classList.toggle('open');
+    toggle.classList.toggle('is-open', isOpen);
+    toggle.setAttribute('aria-expanded', isOpen ? 'true' : 'false');
+  });
+
+  menu.querySelectorAll('a').forEach(function(link){
+    link.addEventListener('click', closeMenu);
+  });
+
+  window.addEventListener('resize', function(){
+    if (window.innerWidth > 600) closeMenu();
+  });
+})();
+
+(function(){
+  var brandWord = document.querySelector('.brand-word');
+  if (!brandWord) return;
+
+  var ORIGINAL_TEXT = brandWord.textContent;
+  var EASTER_TEXT = 'Harley';
+  var SCRAMBLE_CHARS = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ!@#$%&*';
+  var CLICKS_NEEDED = 5;
+  var CLICK_WINDOW_MS = 2000;
+  var HOLD_MS = 5000;
+
+  var clickCount = 0;
+  var clickTimer = null;
+  var isAnimating = false;
+
+  var heartsContainer = document.querySelector('.hearts-burst');
+  var harleyAudio = new Audio('https://raw.githubusercontent.com/HS1HYDRAX7/NS-SITE/main/assets/audio/doors-lotus-revive-sound_ZJ0phM7.mp3');
+  harleyAudio.preload = 'auto';
+
+  function playHarleySound(){
+    try{
+      harleyAudio.currentTime = 0;
+      harleyAudio.play().catch(function(){});
+    }catch(e){}
+  }
+
+  function spawnHeart(){
+    if (!heartsContainer) return;
+    var heart = document.createElement('span');
+    heart.className = 'heart-particle';
+    heart.textContent = '\u2764\ufe0f';
+    heart.style.left = (Math.random() * 90) + '%';
+    heart.style.fontSize = (14 + Math.random() * 16) + 'px';
+    var duration = 1100 + Math.random() * 900;
+    heart.style.animationDuration = duration + 'ms';
+    heart.style.setProperty('--drift', (Math.random() * 70 - 35) + 'px');
+    heart.style.setProperty('--rot', (Math.random() * 40 - 20) + 'deg');
+    heartsContainer.appendChild(heart);
+    setTimeout(function(){ heart.remove(); }, duration + 80);
+  }
+
+  function startHeartsBurst(){
+    for (var i = 0; i < 9; i++){
+      setTimeout(spawnHeart, i * 40);
+    }
+    return setInterval(spawnHeart, 260);
+  }
+
+  function scrambleTo(el, fromText, toText, onDone){
+    var length = Math.max(fromText.length, toText.length);
+    var totalFrames = 26;
+    var frame = 0;
+    var framesPerChar = totalFrames / length;
+
+    el.classList.add('is-scrambling');
+
+    var interval = setInterval(function(){
+      var output = '';
+      for (var i = 0; i < length; i++){
+        var lockFrame = (i + 1) * framesPerChar * 0.85;
+        if (frame >= lockFrame){
+          output += toText[i] || '';
+        } else {
+          output += SCRAMBLE_CHARS[Math.floor(Math.random() * SCRAMBLE_CHARS.length)];
+        }
+      }
+      el.textContent = output;
+      frame++;
+      if (frame > totalFrames){
+        clearInterval(interval);
+        el.textContent = toText;
+        el.classList.remove('is-scrambling');
+        if (onDone) onDone();
+      }
+    }, 45);
+  }
+
+  brandWord.addEventListener('click', function(){
+    if (isAnimating) return;
+
+    clickCount++;
+    clearTimeout(clickTimer);
+    clickTimer = setTimeout(function(){ clickCount = 0; }, CLICK_WINDOW_MS);
+
+    if (clickCount >= CLICKS_NEEDED){
+      clickCount = 0;
+      clearTimeout(clickTimer);
+      isAnimating = true;
+
+      scrambleTo(brandWord, ORIGINAL_TEXT, EASTER_TEXT, function(){
+        playHarleySound();
+        var heartsInterval = startHeartsBurst();
+        setTimeout(function(){
+          clearInterval(heartsInterval);
+          scrambleTo(brandWord, EASTER_TEXT, ORIGINAL_TEXT, function(){
+            isAnimating = false;
+          });
+        }, HOLD_MS);
+      });
+    }
+  });
+})();
+</script>
+
+</body>
+</html>
