@@ -1491,6 +1491,91 @@ nav a.is-active{color:var(--text-1);}
 }
 </style>
 <script src="https://code.iconify.design/iconify-icon/2.1.0/iconify-icon.min.js" async></script>
+  <script src="https://www.mcaptcha.net/js/api.js" async defer></script>
+  <style>
+    .mcaptcha-box {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 9999;
+      max-width: 380px;
+      background: var(--glass-fill-strong);
+      border: 1px solid var(--glass-border);
+      border-radius: 16px;
+      padding: 20px;
+      box-shadow: var(--shadow-deep);
+      opacity: 0;
+      transform: translateY(20px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
+    }
+    .mcaptcha-box.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .mcaptcha-box h3 {
+      margin: 0 0 12px;
+      font-size: 16px;
+      font-family: 'Rajdhani', sans-serif;
+      color: var(--text-1);
+    }
+    .mcaptcha-box p {
+      margin: 0 0 16px;
+      font-size: 13px;
+      color: var(--text-2);
+      line-height: 1.5;
+    }
+    .mcaptcha-widget {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+    }
+    .mcaptcha-input {
+      flex: 1;
+      padding: 10px 14px;
+      border-radius: 10px;
+      border: 1px solid var(--glass-border);
+      background: var(--glass-fill);
+      color: var(--text-1);
+      font-family: inherit;
+      font-size: 14px;
+    }
+    .mcaptcha-input:focus {
+      outline: none;
+      border-color: var(--red-1);
+    }
+    .mcaptcha-verify-btn {
+      padding: 10px 20px;
+      border-radius: 10px;
+      border: none;
+      background: linear-gradient(135deg, var(--red-1), var(--red-3));
+      color: #fff;
+      font-weight: 700;
+      font-size: 14px;
+      cursor: pointer;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+    .mcaptcha-verify-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(var(--red-glow), 0.4);
+    }
+    .mcaptcha-verify-btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+    .mcaptcha-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.8);
+      z-index: 9998;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.3s ease;
+    }
+    .mcaptcha-overlay.is-visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+  </style>
 </head>
 <body>
 <a href="#main-content" class="skip-link">Skip to content</a>
@@ -2526,6 +2611,91 @@ var showCookieConsent = function(){
       showToast('Could not copy the key', 'gravity-ui:circle-exclamation');
     });
   });
+})();
+
+(function(){
+  var mcaptchaBox = document.createElement('div');
+  mcaptchaBox.id = 'mcaptcha-container';
+  mcaptchaBox.className = 'mcaptcha-box';
+  mcaptchaBox.innerHTML = '
+    <h3>Human Verification</h3>
+    <p>Please complete the CAPTCHA to verify you are not a robot.</p>
+    <div class="mcaptcha-widget">
+      <input type="text" class="mcaptcha-input" id="mcaptcha-input" placeholder="Enter CAPTCHA" autocomplete="off">
+      <button class="mcaptcha-verify-btn" id="mcaptcha-verify">Verify</button>
+    </div>
+  ';
+  document.body.appendChild(mcaptchaBox);
+
+  var mcaptchaOverlay = document.createElement('div');
+  mcaptchaOverlay.className = 'mcaptcha-overlay';
+  document.body.appendChild(mcaptchaOverlay);
+
+  var isVerified = false;
+  var verifyBtn = document.getElementById('mcaptcha-verify');
+  var input = document.getElementById('mcaptcha-input');
+
+  function showMcaptcha() {
+    mcaptchaBox.classList.add('is-visible');
+    mcaptchaOverlay.classList.add('is-visible');
+    input.focus();
+  }
+
+  function hideMcaptcha() {
+    mcaptchaBox.classList.remove('is-visible');
+    mcaptchaOverlay.classList.remove('is-visible');
+  }
+
+  function generateRandomString(length) {
+    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789';
+    var result = '';
+    for (var i = 0; i < length; i++) {
+      result += chars.charAt(Math.floor(Math.random() * chars.length));
+    }
+    return result;
+  }
+
+  var expectedCaptcha = generateRandomString(6);
+
+  verifyBtn.addEventListener('click', function() {
+    if (input.value.toUpperCase() === expectedCaptcha.toUpperCase()) {
+      isVerified = true;
+      hideMcaptcha();
+      showToast('Verification complete!', 'gravity-ui:circle-check');
+    } else {
+      showToast('Incorrect CAPTCHA. Please try again.', 'gravity-ui:circle-exclamation');
+      expectedCaptcha = generateRandomString(6);
+      input.value = '';
+      input.focus();
+    }
+  });
+
+  input.addEventListener('keypress', function(e) {
+    if (e.key === 'Enter') {
+      verifyBtn.click();
+    }
+  });
+
+  var hasShownMcaptcha = false;
+  var checkInterval = setInterval(function() {
+    if (window.mCaptcha && !hasShownMcaptcha) {
+      hasShownMcaptcha = true;
+      clearInterval(checkInterval);
+      window.mCaptcha('MC-377611683b2642534966d52c74265d13', {
+        element: 'mcaptcha-container',
+        onSuccess: function() {
+          isVerified = true;
+          hideMcaptcha();
+          showToast('Verification complete!', 'gravity-ui:circle-check');
+        },
+        onError: function() {
+          showToast('Verification failed. Please try again.', 'gravity-ui:circle-exclamation');
+        }
+      });
+    }
+  }, 500);
+
+  setTimeout(showMcaptcha, 2000);
 })();
 </script>
 
